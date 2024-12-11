@@ -74,18 +74,18 @@
               <div class="total-item">
                 <span class="icon income-icon"><mat-icon>attach_money</mat-icon></span>
                 <h3>Current Month Income</h3>
-                <p>{{ totalCurrentMonthIncome | currency }}</p>
+                <p>{{ totalCurrentMonthIncome | currency:'R' }}</p>
               </div>
               <div class="total-item">
                 <span class="icon expense-icon"><mat-icon>money_off</mat-icon></span>
                 <h3>Current Month Expense</h3>
-                <p>{{ totalCurrentMonthExpense | currency }}</p>
+                <p>{{ totalCurrentMonthExpense | currency:'R' }}</p>
               </div>
               <hr class="total-line">
               <div class="total-item">
                 <span class="icon trans-icon"><mat-icon>account_balance_wallet</mat-icon></span>
                 <h3>Current Month Savings</h3>
-                <p>{{ currentMonthSavings | currency }}</p>
+                <p>{{ currentMonthSavings | currency:'R' }}</p>
               </div>
             </div>
           </div>
