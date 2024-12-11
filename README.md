@@ -1,5 +1,10 @@
 # SpendSmart
 
+ the output:
+![image](https://github.com/user-attachments/assets/0d1e40d9-05d9-4905-9a4a-20700b47f5cb)
+
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.11.
 
 ## Development server
