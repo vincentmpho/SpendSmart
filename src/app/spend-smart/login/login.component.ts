@@ -39,7 +39,7 @@ toggleForm(form: 'login' | 'register') {
 login() {
   if (this.loginForm.valid) {
     console.log("Login info==>", this.loginForm.value);
-    this.router.navigate(['/spend-smart/dashnoard']);
+    this.router.navigate(['/spend-smart/dashboard']);
   } else {
     this.snackBar.open('Invalid email or password!', 'Close', { duration: 3000 });
   }
@@ -51,7 +51,8 @@ register() {
       window.location.reload();
     }, 2000);
     this.router.navigate(['/spend-smart/login']);
-  } else {
+  }
+   else {
     this.snackBar.open('Please fill in all fields correctly!', 'Close', { duration: 3000 });
   }
 }

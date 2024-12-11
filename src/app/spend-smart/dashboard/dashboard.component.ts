@@ -13,19 +13,19 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent {
   //Income
-  lastMonthsIncome = ['January: $1000', 'February: $1500', 'March: $1200'];
-  currentMonthIncome = '$2000';
+  lastMonthsIncome = ['January: R1000', 'February: R1500', 'March: R1200'];
+  currentMonthIncome = 'R2000';
  
   //Expense
-  lastMonthsExpense = ['January: $800', 'February: $1000', 'March: $1200'];
-  currentMonthExpense = '$1500';
+  lastMonthsExpense = ['January: R800', 'February: R1000', 'March: R1200'];
+  currentMonthExpense = 'R1500';
  
   //Todo Trans
   todoTransactions = [
     { description: 'Pay electricity bill' },
-    { description: 'Submit monthly report' },
+    { description: 'SelfCare '},
     { description: 'Buy groceries' },
-    { description: 'Call insurance company' }
+    { description: 'Gym' }
   ];
  
   //Total
