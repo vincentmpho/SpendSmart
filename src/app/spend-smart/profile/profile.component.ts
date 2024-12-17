@@ -14,7 +14,7 @@ import { DataService } from '../services/data.service';
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
-  isSubmitting = false; // Prevents duplicate submissions
+  isSubmitting = false; 
 
   constructor(
     private fb: FormBuilder,
@@ -47,18 +47,18 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting = true; // Lock submission
+    this.isSubmitting = true; 
     this.dataService.addProfile(this.profileForm.value).subscribe({
       next: () => this.handleSuccess(),
       error: (error) => this.handleError(error),
-      complete: () => (this.isSubmitting = false) // Unlock submission
+      complete: () => (this.isSubmitting = false) 
     });
   }
 
   // Handle successful submission
   private handleSuccess(): void {
     this.openSnackBar('Profile added successfully!', 'Close');
-    this.profileForm.reset(); // Reset the form after successful submission
+    this.profileForm.reset(); 
   }
 
   // Handle errors during submission
