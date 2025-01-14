@@ -1,23 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DataService } from '../services/data.service'; 
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataService } from '../services/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-income',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './income.component.html',
-  styleUrls: ['./income.component.scss'] 
+  styleUrls: ['./income.component.scss']
 })
-export class IncomeComponent { 
-
+export class IncomeComponent implements OnInit {
   incomeForm: any;
   selectedMonth: string;
-  incomes: any[] = []; 
+  incomes: Array<{ month: string; source: string; amount: number; investments: string }> = [];
   monthSelected: boolean = false;
 
-  constructor(private fb: FormBuilder, private dataService: DataService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private dataService: DataService
+  ) {
     const currentDate = new Date();
     this.selectedMonth = currentDate.toLocaleString('default', { month: 'long' });
   }
@@ -26,24 +30,23 @@ export class IncomeComponent {
     this.incomeForm = this.fb.group({
       month: ['', Validators.required],
       source: ['', Validators.required],
-      amount: ['', [Validators.required, Validators.min(0)]], 
+      amount: ['', [Validators.required, Validators.min(0)]],
       investments: ['', Validators.required]
     });
 
-    // Fetch initial data for the selected month
     this.getIncomesForMonth(this.selectedMonth);
   }
 
-  onChange(event: any) {
+  onChange(event: any): void {
     this.selectedMonth = event.target.value;
     this.monthSelected = true;
     this.getIncomesForMonth(this.selectedMonth);
   }
 
-  getIncomesForMonth(month: string) {
-    this.dataService.getIncomes(month).subscribe( 
+  getIncomesForMonth(month: string): void {
+    this.dataService.getIncomes(month).subscribe(
       (data) => {
-        this.incomes = data || []; // Ensure incomes is an array
+        this.incomes = data || [];
       },
       (error) => {
         console.error('Error fetching income data:', error);
@@ -52,13 +55,17 @@ export class IncomeComponent {
   }
 
   calculateTotalIncome(): number {
-    return this.incomes.reduce((total, income) => total + (income.amount || 0), 0); 
+    return this.incomes.reduce((total, income) => total + (income.amount || 0), 0);
   }
 
-  onSubmit() {
+  getFilteredIncomes(): Array<{ month: string; source: string; amount: number; investments: string }> {
+    return this.incomes.filter((income) => income.month === this.selectedMonth);
+  }
+
+  onSubmit(): void {
     if (this.incomeForm.valid) {
-      const newIncome = this.incomeForm.value;
-      this.dataService.addIncome(newIncome).subscribe (
+      const newIncome = { ...this.incomeForm.value, month: this.selectedMonth };
+      this.dataService.addIncome(newIncome).subscribe(
         (response) => {
           console.log('Income Added Successfully:', response);
           this.incomes.push(response);
@@ -71,10 +78,9 @@ export class IncomeComponent {
       );
     }
   }
-  
 
-  saveForm() {
-    this.dataService.saveAllIncomes(this.incomes).subscribe( 
+  saveForm(): void {
+    this.dataService.saveAllIncomes(this.incomes).subscribe(
       () => {
         console.log('All incomes saved successfully!');
       },
@@ -82,5 +88,9 @@ export class IncomeComponent {
         console.error('Error saving incomes:', error);
       }
     );
+  }
+
+  onBack(): void {
+    this.router.navigate(['/spend-smart/dashboard']);
   }
 }

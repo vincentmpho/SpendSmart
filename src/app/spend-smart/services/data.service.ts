@@ -6,19 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  private incomeBaseUrl = 'https://localhost:7286/api/incomes';
+  private incomeBaseUrl = 'https://localhost:7286/api/income';
+
   private expenseBaseUrl = 'https://localhost:7286/api/expenses';
   private profileBaseUrl = 'https://localhost:7286/api/profile';
+  private transactionBaseUrl = 'https://localhost:7286/api/transaction/add';
 
   constructor(private http: HttpClient) {}
 
   // ----------------- Income Methods -----------------
 
-  // Get incomes by month
-  getIncomes(month: string): Observable<any> {
-    return this.http.get(`${this.incomeBaseUrl}/${month}`);
-  }
-
+// Get incomes by month
+getIncomes(month: string): Observable<any> {
+  return this.http.get(`${this.incomeBaseUrl}/${month}`);
+}
   // Add a new income
   addIncome(income: any): Observable<any> {
     return this.http.post(this.incomeBaseUrl, income);
@@ -52,4 +53,11 @@ export class DataService {
   addProfile(profile: any): Observable<any> {
     return this.http.post(this.profileBaseUrl, profile);
   }
+
+
+ // ----------------- Todo Methods -----------------
+// Add a new transaction
+addTransaction(transaction: any): Observable<any> {
+  return this.http.post('https://localhost:7286/api/transaction/add', transaction);
+}
 }

@@ -7,6 +7,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-todo',
@@ -52,15 +53,19 @@ export class TodoComponent {
     { expenseType: 'Essentials', expenseAmount: 250 },
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private dataService: DataService // Inject the service
+  ) {
     const currentDate = new Date();
-
     const currentMonth = currentDate.toLocaleString('default', {
       month: 'long',
     });
-
+  
     this.selectedMonth = currentMonth;
   }
+  
 
   ngOnInit(): void {
     this.todoForm = this.fb.group({
@@ -71,48 +76,63 @@ export class TodoComponent {
       expenseAmount: ['', Validators.required],
     });
   }
-
   onSubmitExpense() {
     if (this.todoForm.valid) {
       const newExpense = this.todoForm.value;
-
-      switch (this.selectedMonth) {
-        case 'January':
-          this.januaryExpense.push(newExpense);
-
-          break;
-
-        case 'February':
-          this.februaryExpense.push(newExpense);
-
-          break;
-
-        case 'March':
-          this.marchExpense.push(newExpense);
-
-          break;
-
-        default:
-          break;
-      }
-
-      this.todoForm.reset();
-
-      this.todoForm.patchValue({
-        month: '',
-        expenseType: '',
-        expenseAmount: '',
-      });
+  
+      // Use the DataService to save the transaction to the API
+      this.dataService.addTransaction(newExpense).subscribe(
+        (response) => {
+          console.log('Transaction added successfully:', response);
+  
+          // Reset the form after successful submission
+          this.todoForm.reset({
+            month: '',
+            expenseType: '',
+            expenseAmount: '',
+          });
+  
+          // Optionally update the UI to reflect the new data
+          this.getFilteredExpenses();
+        },
+        (error) => {
+          console.error('Error adding transaction:', error);
+        }
+      );
     }
   }
+  
 
   onChangeExpense(event: any) {
     this.selectedMonth = event.target.value;
-
     this.monthSelected = true;
-
-    this.getFilteredExpenses();
+  
+    // Fetch expenses from the API
+    this.dataService.getExpenses(this.selectedMonth).subscribe(
+      (expenses) => {
+        console.log('Expenses fetched successfully:', expenses);
+  
+        // Update local expenses list for display
+        switch (this.selectedMonth) {
+          case 'January':
+            this.januaryExpense = expenses;
+            break;
+          case 'February':
+            this.februaryExpense = expenses;
+            break;
+          case 'March':
+            this.marchExpense = expenses;
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {
+        console.error('Error fetching expenses:', error);
+      }
+    );
   }
+  
 
   getFilteredExpenses() {
     let filteredExpense: any[] = [];
