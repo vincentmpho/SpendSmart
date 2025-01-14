@@ -47,6 +47,8 @@ getIncomes(month: string): Observable<any> {
     return this.http.post(`${this.expenseBaseUrl}/bulk`, expenses);
   }
 
+
+
   // ----------------- Profile Methods -----------------
 
   // Add a new profile
@@ -58,6 +60,19 @@ getIncomes(month: string): Observable<any> {
  // ----------------- Todo Methods -----------------
 // Add a new transaction
 addTransaction(transaction: any): Observable<any> {
-  return this.http.post('https://localhost:7286/api/transaction/add', transaction);
+  return this.http.post(this.transactionBaseUrl, transaction);
 }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+

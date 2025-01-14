@@ -56,7 +56,7 @@ export class TodoComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private dataService: DataService // Inject the service
+    private dataService: DataService 
   ) {
     const currentDate = new Date();
     const currentMonth = currentDate.toLocaleString('default', {
@@ -76,62 +76,66 @@ export class TodoComponent {
       expenseAmount: ['', Validators.required],
     });
   }
+
   onSubmitExpense() {
-    if (this.todoForm.valid) {
-      const newExpense = this.todoForm.value;
-  
-      // Use the DataService to save the transaction to the API
-      this.dataService.addTransaction(newExpense).subscribe(
-        (response) => {
-          console.log('Transaction added successfully:', response);
-  
-          // Reset the form after successful submission
-          this.todoForm.reset({
-            month: '',
-            expenseType: '',
-            expenseAmount: '',
-          });
-  
-          // Optionally update the UI to reflect the new data
-          this.getFilteredExpenses();
-        },
-        (error) => {
-          console.error('Error adding transaction:', error);
-        }
-      );
+  if (this.todoForm.valid) {
+    const newExpense = this.todoForm.value;
+
+    // Add the new expense directly to the relevant local expense list
+    switch (this.selectedMonth) {
+      case 'January':
+        this.januaryExpense.push(newExpense);
+        break;
+      case 'February':
+        this.februaryExpense.push(newExpense);
+        break;
+      case 'March':
+        this.marchExpense.push(newExpense);
+        break;
+      default:
+        break;
     }
+
+    // Reset the form after successful submission
+    this.todoForm.reset({
+      month: this.selectedMonth,
+      expenseType: '',
+      expenseAmount: '',
+    });
   }
-  
+}
+
 
   onChangeExpense(event: any) {
-    this.selectedMonth = event.target.value;
-    this.monthSelected = true;
-  
-    // Fetch expenses from the API
-    this.dataService.getExpenses(this.selectedMonth).subscribe(
-      (expenses) => {
-        console.log('Expenses fetched successfully:', expenses);
-  
-        // Update local expenses list for display
-        switch (this.selectedMonth) {
-          case 'January':
-            this.januaryExpense = expenses;
-            break;
-          case 'February':
-            this.februaryExpense = expenses;
-            break;
-          case 'March':
-            this.marchExpense = expenses;
-            break;
-          default:
-            break;
-        }
-      },
-      (error) => {
-        console.error('Error fetching expenses:', error);
+  this.selectedMonth = event.target.value;
+  this.monthSelected = true;
+
+  // Fetch expenses from the API
+  this.dataService.getExpenses(this.selectedMonth).subscribe(
+    (expenses) => {
+      console.log('Expenses fetched successfully:', expenses);
+
+      // Update the displayed expenses based on the API response
+      switch (this.selectedMonth) {
+        case 'January':
+          this.januaryExpense = expenses;
+          break;
+        case 'February':
+          this.februaryExpense = expenses;
+          break;
+        case 'March':
+          this.marchExpense = expenses;
+          break;
+        default:
+          break;
       }
-    );
-  }
+    },
+    (error) => {
+      console.error('Error fetching expenses:', error);
+    }
+  );
+}
+
   
 
   getFilteredExpenses() {

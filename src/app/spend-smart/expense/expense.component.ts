@@ -40,17 +40,17 @@ export class ExpenseComponent  {
   onSubmitExpense() {
     if (this.expenseForm.valid) {
         const newExpense = this.expenseForm.value;
-        this.expenseForm.disable(); // Disable form
+        this.expenseForm.disable(); 
         this.dataService.addExpense(newExpense).subscribe({
             next: () => {
                 alert('Expense saved successfully!');
                 this.loadExpenses(this.selectedMonth);
                 this.expenseForm.reset();
-                this.expenseForm.enable(); // Enable form
+                this.expenseForm.enable(); 
             },
             error: (err) => {
                 console.error('Error saving expense:', err);
-                this.expenseForm.enable(); // Enable form on error
+                this.expenseForm.enable(); 
             },
         });
     }
