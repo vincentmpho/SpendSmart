@@ -64,46 +64,29 @@ export class IncomeComponent implements OnInit {
 
   onSubmit() {
     if (this.incomeForm.valid) {
-        const newExpense = this.incomeForm.value;
-        this.incomeForm.disable(); 
-        this.dataService.addIncome(newExpense).subscribe({
-            next: () => {
-                alert('Income saved successfully!');
-                this.loadExpenses(this.selectedMonth);
-                this.incomeForm.reset();
-                this.incomeForm.enable(); 
-            },
-            error: (err) => {
-                console.error('Error saving income:', err);
-                this.incomeForm.enable(); 
-            },
-        });
+      const newIncome = this.incomeForm.value;
+      // Add to local income list
+      this.incomes.push(newIncome);  
+      this.incomeForm.reset();
+    } else {
+      alert('Please fill all required fields before adding income.');
     }
-}
+  }
   
-loadExpenses(month: string) {
-  this.dataService.getIncomes(month).subscribe({
-    next: (data) => {
-      this.incomes = data;
-    },
-    error: (err) => {
-      console.error('Error fetching incomes:', err);
-    },
-  });
-}
-
   
   saveForm(): void {
-    this.dataService.saveAllIncomes(this.incomes).subscribe(
-      () => {
-        this.router.navigate(['/spend-smart/dashboard']);
-        //console.log('All incomes saved successfully!');
-      },
-      (error) => {
-        console.error('Error saving incomes:', error);
-      }
-    );
-  }
+  this.dataService.saveAllIncomes(this.incomes).subscribe(
+    () => {
+      // Notify user
+      alert('Income saved successfully!'); 
+      this.router.navigate(['/spend-smart/dashboard']);
+    },
+    (error) => {
+      console.error('Error saving incomes:', error);
+      alert('An error occurred while saving incomes.');
+    }
+  );
+}
 
   onBack(): void {
     this.router.navigate(['/spend-smart/dashboard']);

@@ -35,7 +35,7 @@
           <label for="source">Source of Income:</label>
           <select formControlName="source" id="source" class="form-control" [class.disabled-dropdown]="!monthSelected">
             <option value="" disabled>Select Source</option>
-            <option *ngFor="let source of ['Tech Startup Side Hustle', 'Social Media Content Creation', 'Thrift Flip Sales', 'App Development Freelance', 'eSports Streaming', 'Weekend Food Pop-Up']" [value]="source">{{ source }}</option>
+            <option *ngFor="let source of ['Side Hustle', 'Social Media Content Creation', 'Thrift Flip Sales', 'App Dev Freelance', 'eSports Streaming', 'Weekend Food Pop-Up']" [value]="source">{{ source }}</option>
           </select>
         </div>
   
@@ -51,10 +51,11 @@
           />
         </div>
        
-        <button type="submit" class="btn btn-primary" (click)="onSubmit()"
+        <button type="button" class="btn btn-primary" (click)="onSubmit()"
 
         [class.disabled-dropdown]="!monthSelected">Add Income</button>
 
+        
 
       </form>
   
@@ -86,3 +87,6 @@
     </div>
   </div>
   
+
+ 
+
