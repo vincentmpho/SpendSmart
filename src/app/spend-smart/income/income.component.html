@@ -50,14 +50,12 @@
             [class.disabled-dropdown]="!monthSelected"
           />
         </div>
-  
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [class.disabled-dropdown]="!monthSelected"
-        >
-          Add
-        </button>
+       
+        <button type="submit" class="btn btn-primary" (click)="onSubmit()"
+
+        [class.disabled-dropdown]="!monthSelected">Add Income</button>
+
+
       </form>
   
       <hr />

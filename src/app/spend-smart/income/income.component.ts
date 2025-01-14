@@ -62,22 +62,36 @@ export class IncomeComponent implements OnInit {
     return this.incomes.filter((income) => income.month === this.selectedMonth);
   }
 
-  onSubmit(): void {
+  onSubmit() {
     if (this.incomeForm.valid) {
-      const newIncome = { ...this.incomeForm.value, month: this.selectedMonth };
-      this.dataService.addIncome(newIncome).subscribe(
-        (response) => {
-          console.log('Income Added Successfully:', response);
-          this.getIncomesForMonth(this.selectedMonth);  // Fetch updated incomes
-          this.incomeForm.reset();
-          this.incomeForm.patchValue({ month: this.selectedMonth });
-        },
-        (error) => {
-          console.error('Error Adding Income:', error);
-        }
-      );
+        const newExpense = this.incomeForm.value;
+        this.incomeForm.disable(); 
+        this.dataService.addIncome(newExpense).subscribe({
+            next: () => {
+                alert('Income saved successfully!');
+                this.loadExpenses(this.selectedMonth);
+                this.incomeForm.reset();
+                this.incomeForm.enable(); 
+            },
+            error: (err) => {
+                console.error('Error saving income:', err);
+                this.incomeForm.enable(); 
+            },
+        });
     }
-  }
+}
+  
+loadExpenses(month: string) {
+  this.dataService.getIncomes(month).subscribe({
+    next: (data) => {
+      this.incomes = data;
+    },
+    error: (err) => {
+      console.error('Error fetching incomes:', err);
+    },
+  });
+}
+
   
   saveForm(): void {
     this.dataService.saveAllIncomes(this.incomes).subscribe(
