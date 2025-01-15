@@ -22,7 +22,7 @@
                 <button class="button" (click)="onIncome()">View</button>
             </div>
         </div>
- 
+
         <!-- Expense Card -->  
         <div class="card">
             <div class="card-header">
@@ -44,8 +44,8 @@
             </div>
             <button class="button" (click)="onExpense()">View</button>
         </div>
- 
-        <!-- To DO Trans -->
+
+        <!-- To Do Trans -->
         <div class="card">
             <div class="card-header">
               <span class="icon todo-icon"><mat-icon>assignment</mat-icon></span>
@@ -53,21 +53,20 @@
             </div>
             <hr>
             <ul>
-              <li *ngFor="let item of todoTransactions">
-                <span class="transaction-status">
-                  <mat-icon>hourglass_empty</mat-icon>
-                </span>
-                <span class="transaction-details">{{ item.description }}</span>
+              <li *ngFor="let item of todoTransactions" class="transaction-item">
+                <span class="description">{{ item.description }}</span>
+                <span class="amount">{{ item.amount | currency:'R' }}</span>
               </li>
             </ul>
+            
             <button class="button" (click)="onTodo()">View</button>
-          </div>
+        </div>
+
         <!-- Total -->
- 
         <div class="card">
             <div class="card-header">
               <span class="icon total-icon"><mat-icon>timeline</mat-icon></span>
-              <h2>Total Income</h2>
+              <h2>Total</h2>
             </div>
             <hr>
             <div class="total-details">
@@ -87,7 +86,13 @@
                 <h3>Current Month Savings</h3>
                 <p>{{ currentMonthSavings | currency:'R' }}</p>
               </div>
+              <div class="total-item">
+                <span class="icon trans-icon"><mat-icon>account_balance_wallet</mat-icon></span>
+                <h3>Monthly Financial Summary</h3>
+                <p>{{ totalTransactions | currency:'R' }}</p>
+              </div>
+              
             </div>
-          </div>
+        </div>
     </div>
 </div>

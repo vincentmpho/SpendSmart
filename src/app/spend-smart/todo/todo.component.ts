@@ -30,7 +30,7 @@ export class TodoComponent {
 
     { month: 'February', expenseAmount: 2000 },
 
-    { month: 'March', expenseAmount: 1800 },
+    { month: '', expenseAmount: 1800 },
   ];
 
   monthSelected: boolean = false;
@@ -201,7 +201,8 @@ export class TodoComponent {
   }
 
   saveForm() {
-    console.log('Form saved!');
+    alert('Transactions saved successfully!');
+        this.router.navigate(['/spend-smart/dashboard']);
   }
 
   onBack() {

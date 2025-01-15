@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
   private incomeBaseUrl = 'https://localhost:7286/api/income';
-
   private expenseBaseUrl = 'https://localhost:7286/api/expenses';
   private profileBaseUrl = 'https://localhost:7286/api/profile';
   private transactionBaseUrl = 'https://localhost:7286/api/transaction/add';
@@ -41,12 +40,14 @@ getIncomes(month: string): Observable<any> {
   addExpense(expense: any): Observable<any> {
     return this.http.post(this.expenseBaseUrl, expense);
   }
-
-  // Save all expenses
   saveAllExpenses(expenses: any[]): Observable<any> {
+    expenses.forEach(expense => {
+      expense.id = 0; // Ensure the Id is set to 0
+    });
     return this.http.post(`${this.expenseBaseUrl}/bulk`, expenses);
   }
-
+  
+  
 
 
   // ----------------- Profile Methods -----------------

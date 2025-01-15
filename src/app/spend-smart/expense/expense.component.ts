@@ -43,7 +43,6 @@ export class ExpenseComponent  {
         this.expenseForm.disable(); 
         this.dataService.addExpense(newExpense).subscribe({
             next: () => {
-                alert('Expense saved successfully!');
                 this.loadExpenses(this.selectedMonth);
                 this.expenseForm.reset();
                 this.expenseForm.enable(); 
@@ -74,18 +73,20 @@ export class ExpenseComponent  {
     });
   }
 
-  saveForm() {
-    this.dataService.saveAllExpenses(this.expenses).subscribe({
-      next: () => {
-        alert('All expenses saved successfully!');
+  saveForm(): void {
+    this.dataService.saveAllExpenses(this.expenses).subscribe(
+      () => {
+        alert('Expenses saved successfully!');
+        this.router.navigate(['/spend-smart/dashboard']);
       },
-      error: (err) => {
-        console.error('Error saving all expenses:', err);
-      },
-    });
+      (error) => {
+        console.error('Error saving expenses:', error);
+        alert('An error occurred while saving expenses.');
+      }
+    );
   }
-  
 
+  
   calculateTotalExpense(month: string): number {
     return this.expenses.reduce((acc, curr) => acc + curr.expenseAmount, 0);
   }
