@@ -3,77 +3,56 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-  private incomeBaseUrl = 'https://localhost:7286/api/income';
-  private expenseBaseUrl = 'https://localhost:7286/api/expenses';
-  private profileBaseUrl = 'https://localhost:7286/api/profile';
-  private transactionBaseUrl = 'https://localhost:7286/api/transaction/add';
+  private readonly baseUrl = 'https://localhost:7286/api';
+  private readonly endpoints = {
+    income: `${this.baseUrl}/income`,
+    expenses: `${this.baseUrl}/expenses`,
+    profile: `${this.baseUrl}/profile`,
+    transaction: `${this.baseUrl}/transaction/add`,
+  };
 
   constructor(private http: HttpClient) {}
 
   // ----------------- Income Methods -----------------
-
-// Get incomes by month
-getIncomes(month: string): Observable<any> {
-  return this.http.get(`${this.incomeBaseUrl}/${month}`);
-}
-  // Add a new income
-  addIncome(income: any): Observable<any> {
-    return this.http.post(this.incomeBaseUrl, income);
+  getIncomes(month: string): Observable<any> {
+    return this.http.get(`${this.endpoints.income}/${month}`);
   }
 
-  // Save all incomes
+  addIncome(income: any): Observable<any> {
+    return this.http.post(this.endpoints.income, income);
+  }
+
   saveAllIncomes(incomes: any[]): Observable<any> {
-    return this.http.post(`${this.incomeBaseUrl}/bulk`, incomes);
+    return this.http.post(`${this.endpoints.income}/bulk`, incomes);
   }
 
   // ----------------- Expense Methods -----------------
-
-  // Get expenses by month
   getExpenses(month: string): Observable<any> {
-    return this.http.get(`${this.expenseBaseUrl}/${month}`);
+    return this.http.get(`${this.endpoints.expenses}/${month}`);
   }
 
-  // Add a new expense
   addExpense(expense: any): Observable<any> {
-    return this.http.post(this.expenseBaseUrl, expense);
+    return this.http.post(this.endpoints.expenses, expense);
   }
-  saveAllExpenses(expenses: any[]): Observable<any> {
-    expenses.forEach(expense => {
-      expense.id = 0; // Ensure the Id is set to 0
-    });
-    return this.http.post(`${this.expenseBaseUrl}/bulk`, expenses);
-  }
-  
-  
 
+  saveAllExpenses(expenses: any[]): Observable<any> {
+    const normalizedExpenses = expenses.map((expense) => ({
+      ...expense,
+      id: 0, // Ensure the Id is set to 0
+    }));
+    return this.http.post(`${this.endpoints.expenses}/bulk`, normalizedExpenses);
+  }
 
   // ----------------- Profile Methods -----------------
-
-  // Add a new profile
   addProfile(profile: any): Observable<any> {
-    return this.http.post(this.profileBaseUrl, profile);
+    return this.http.post(this.endpoints.profile, profile);
   }
 
-
- // ----------------- Todo Methods -----------------
-// Add a new transaction
-addTransaction(transaction: any): Observable<any> {
-  return this.http.post(this.transactionBaseUrl, transaction);
+  // ----------------- Transaction Methods -----------------
+  addTransaction(transaction: any): Observable<any> {
+    return this.http.post(this.endpoints.transaction, transaction);
+  }
 }
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
