@@ -1,120 +1,110 @@
 <div class="navbar">
-
-    <h2>
-
-        TO DO TRANSACTIONS
-
-    </h2>
-
+  <h2>TO DO TRANSACTIONS</h2>
 </div>
 
 <div class="main-container">
+  <div class="container">
+    <h2>Todo Transactions</h2>
 
-    <div class="container">
+    <form
+      [formGroup]="todoForm"
+      (ngSubmit)="onSubmitExpense()"
+      class="input-form"
+    >
+      <div class="form-group">
+        <select
+          formControlName="month"
+          id="month"
+          class="form-control"
+          (change)="onChangeExpense($event)"
+        >
+          <option value="" disabled>Select Month</option>
 
-        <h2>Todo Transactions</h2>
+          <option value="January">January</option>
 
-        <form [formGroup]="todoForm" (ngSubmit)="onSubmitExpense()" class="input-form">
+          <option value="February">February</option>
 
-            <div class="form-group">
+          <option value="March">March</option>
+        </select>
+      </div>
 
-                <select formControlName="month" id="month" class="form-control" (change)="onChangeExpense($event)">
+      <div class="form-group"></div>
 
-                    <option value="" disabled>Select Month</option>
+      <div class="total-todoTrans">
+        Total ToDo's for {{ selectedMonth }}: R{{
+          calculateTotalExpense(selectedMonth)
+        }}
+      </div>
 
-                    <option value="January">January</option>
+      <div class="form-group">
+        <label for="expenseType">Transaction Type:</label>
 
-                    <option value="February">February</option>
+        <input
+          type="text"
+          formControlName="expenseType"
+          id="expenseType"
+          class="form-control"
+          placeholder="Enter Transaction Type"
+          [class.disabled-dropdown]="!monthSelected"
+        />
+      </div>
 
-                    <option value="March">March</option>
+      <div class="form-group">
+        <label for="expenseAmount">Amount:</label>
 
-                </select>
+        <input
+          type="number"
+          formControlName="expenseAmount"
+          id="expenseAmount"
+          class="form-control"
+          placeholder="Enter amount"
+          [class.disabled-dropdown]="!monthSelected"
+        />
+      </div>
 
-            </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        (click)="onSubmitExpense()"
+        [class.disabled-dropdown]="!monthSelected"
+      >
+        Add Transaction
+      </button>
+    </form>
 
-            <div class="form-group">
+    <hr />
 
-            </div>
+    <h3>Transaction List - {{ selectedMonth }}</h3>
 
-            <div class="total-todoTrans">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Transaction Type</th>
 
-                Total ToDo's for {{ selectedMonth }}: R{{ calculateTotalExpense(selectedMonth) }}
+          <th>Amount</th>
+        </tr>
+      </thead>
 
-            </div>
+      <tbody>
+        <tr *ngFor="let todoTrans of getFilteredExpenses()">
+          <td
+            [ngClass]="{ strikeout: todoTrans.selected }"
+            (click)="toggleSelection(todoTrans)"
+          >
+            {{ todoTrans.expenseType }}
+          </td>
 
-            <div class="form-group">
+          <td>{{ todoTrans.expenseAmount }}</td>
+        </tr>
+      </tbody>
+    </table>
 
-                <label for="expenseType">Transaction Type:</label>
+    <div class="input-form">
+      <button class="btn btn-primary" (click)="onBack()">Back</button>
 
-                <input type="text" formControlName="expenseType" id="expenseType" class="form-control"
+      <div class="form-group"></div>
 
-                    placeholder="Enter Transaction Type" [class.disabled-dropdown]="!monthSelected">
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="expenseAmount">Amount:</label>
-
-                <input type="number" formControlName="expenseAmount" id="expenseAmount" class="form-control"
-
-                  placeholder="Enter amount" [class.disabled-dropdown]="!monthSelected">
-
-            </div>
-
-            <button type="submit" class="btn btn-primary" (click)="onSubmitExpense()"
-
-                [class.disabled-dropdown]="!monthSelected">Add Transaction</button>
-
-        </form>
-
-        <hr>
-
-        <h3>Transaction List - {{ selectedMonth }}</h3>
-
-        <table class="table">
-
-            <thead>
-
-                <tr>
-
-                    <th>Transaction Type</th>
-
-                    <th>Amount</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr *ngFor="let todoTrans of getFilteredExpenses()">
-
-                    <td [ngClass]="{'strikeout': todoTrans.selected}" (click)="toggleSelection(todoTrans)">
-
-                        {{ todoTrans.expenseType }}
-
-                    </td>
-
-                    <td>{{ todoTrans.expenseAmount }}</td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-        <div class="input-form">
-
-            <button class="btn btn-primary" (click)="onBack()">Back</button>
-
-            <div class="form-group">
-
-            </div>
-
-            <button class="btn btn-primary" (click)="saveForm()">Save</button>
-
-        </div>
-
+      <button class="btn btn-primary" (click)="saveForm()">Save</button>
     </div>
+  </div>
 </div>
