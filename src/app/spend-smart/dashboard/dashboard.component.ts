@@ -15,17 +15,17 @@ export class DashboardComponent {
   // Income
   lastMonthsIncome = ['January: R1000', 'February: R1500', 'March: R1200'];
   currentMonthIncome = 2000;
-  
+
   // Expense
   lastMonthsExpense = ['January: R800', 'February: R1000', 'March: R1200'];
   currentMonthExpense = 1500;
-  
+
   // Todo Transactions with amount property added
   todoTransactions = [
     { description: 'Pay electricity bill', amount: 200 },
     { description: 'Self-care', amount: 100 },
     { description: 'Buy groceries', amount: 300 },
-    { description: 'Gym', amount: 100 }
+    { description: 'Gym', amount: 100 },
   ];
 
   // Total
@@ -52,6 +52,9 @@ export class DashboardComponent {
 
   // Calculate Total Transactions
   get totalTransactions(): number {
-    return this.todoTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+    return this.todoTransactions.reduce(
+      (total, transaction) => total + transaction.amount,
+      0
+    );
   }
 }

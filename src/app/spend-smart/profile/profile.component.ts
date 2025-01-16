@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+  FormGroup,
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SideNavComponent } from '../side-nav/side-nav.component';
 import { DataService } from '../services/data.service';
@@ -10,11 +15,11 @@ import { DataService } from '../services/data.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, SideNavComponent],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;
-  isSubmitting = false; 
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +41,7 @@ export class ProfileComponent implements OnInit {
       occupation: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       address: ['', Validators.required],
-      contact: ['', Validators.required]
+      contact: ['', Validators.required],
     });
   }
 
@@ -47,18 +52,18 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting = true; 
+    this.isSubmitting = true;
     this.dataService.addProfile(this.profileForm.value).subscribe({
       next: () => this.handleSuccess(),
       error: (error) => this.handleError(error),
-      complete: () => (this.isSubmitting = false) 
+      complete: () => (this.isSubmitting = false),
     });
   }
 
   // Handle successful submission
   private handleSuccess(): void {
     this.openSnackBar('Profile added successfully!', 'Close');
-    this.profileForm.reset(); 
+    this.profileForm.reset();
   }
 
   // Handle errors during submission
@@ -77,7 +82,7 @@ export class ProfileComponent implements OnInit {
   // Open a snackbar to display messages
   private openSnackBar(message: string, action: string): void {
     this.snackBar.open(message, action, {
-      duration: 3000
+      duration: 3000,
     });
   }
 }

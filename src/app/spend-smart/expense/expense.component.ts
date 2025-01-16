@@ -8,20 +8,24 @@ import { DataService } from '../services/data.service';
 @Component({
   selector: 'app-expense',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatIconModule], 
+  imports: [ReactiveFormsModule, CommonModule, MatIconModule],
   templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.scss']
+  styleUrls: ['./expense.component.scss'],
 })
- 
-
-export class ExpenseComponent  {
+export class ExpenseComponent {
   expenseForm!: any;
   selectedMonth: string;
   expenses: any[] = [];
   monthSelected: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private dataService: DataService) {
-    this.selectedMonth = new Date().toLocaleString('default', { month: 'long' });
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private dataService: DataService
+  ) {
+    this.selectedMonth = new Date().toLocaleString('default', {
+      month: 'long',
+    });
   }
 
   ngOnInit(): void {
@@ -33,28 +37,28 @@ export class ExpenseComponent  {
   }
 
   getFilteredExpenses(): any[] {
-    
-    return this.expenses.filter(expense => expense.month === this.selectedMonth);
+    return this.expenses.filter(
+      (expense) => expense.month === this.selectedMonth
+    );
   }
 
   onSubmitExpense() {
     if (this.expenseForm.valid) {
-        const newExpense = this.expenseForm.value;
-        this.expenseForm.disable(); 
-        this.dataService.addExpense(newExpense).subscribe({
-            next: () => {
-                this.loadExpenses(this.selectedMonth);
-                this.expenseForm.reset();
-                this.expenseForm.enable(); 
-            },
-            error: (err) => {
-                console.error('Error saving expense:', err);
-                this.expenseForm.enable(); 
-            },
-        });
+      const newExpense = this.expenseForm.value;
+      this.expenseForm.disable();
+      this.dataService.addExpense(newExpense).subscribe({
+        next: () => {
+          this.loadExpenses(this.selectedMonth);
+          this.expenseForm.reset();
+          this.expenseForm.enable();
+        },
+        error: (err) => {
+          console.error('Error saving expense:', err);
+          this.expenseForm.enable();
+        },
+      });
     }
-}
-
+  }
 
   onChangeExpense(event: any) {
     this.selectedMonth = event.target.value;
@@ -86,7 +90,6 @@ export class ExpenseComponent  {
     );
   }
 
-  
   calculateTotalExpense(month: string): number {
     return this.expenses.reduce((acc, curr) => acc + curr.expenseAmount, 0);
   }

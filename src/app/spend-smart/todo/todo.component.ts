@@ -56,16 +56,15 @@ export class TodoComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private dataService: DataService 
+    private dataService: DataService
   ) {
     const currentDate = new Date();
     const currentMonth = currentDate.toLocaleString('default', {
       month: 'long',
     });
-  
+
     this.selectedMonth = currentMonth;
   }
-  
 
   ngOnInit(): void {
     this.todoForm = this.fb.group({
@@ -78,65 +77,62 @@ export class TodoComponent {
   }
 
   onSubmitExpense() {
-  if (this.todoForm.valid) {
-    const newExpense = this.todoForm.value;
+    if (this.todoForm.valid) {
+      const newExpense = this.todoForm.value;
 
-    // Add the new expense directly to the relevant local expense list
-    switch (this.selectedMonth) {
-      case 'January':
-        this.januaryExpense.push(newExpense);
-        break;
-      case 'February':
-        this.februaryExpense.push(newExpense);
-        break;
-      case 'March':
-        this.marchExpense.push(newExpense);
-        break;
-      default:
-        break;
-    }
-
-    // Reset the form after successful submission
-    this.todoForm.reset({
-      month: this.selectedMonth,
-      expenseType: '',
-      expenseAmount: '',
-    });
-  }
-}
-
-
-  onChangeExpense(event: any) {
-  this.selectedMonth = event.target.value;
-  this.monthSelected = true;
-
-  // Fetch expenses from the API
-  this.dataService.getExpenses(this.selectedMonth).subscribe(
-    (expenses) => {
-      console.log('Expenses fetched successfully:', expenses);
-
-      // Update the displayed expenses based on the API response
+      // Add the new expense directly to the relevant local expense list
       switch (this.selectedMonth) {
         case 'January':
-          this.januaryExpense = expenses;
+          this.januaryExpense.push(newExpense);
           break;
         case 'February':
-          this.februaryExpense = expenses;
+          this.februaryExpense.push(newExpense);
           break;
         case 'March':
-          this.marchExpense = expenses;
+          this.marchExpense.push(newExpense);
           break;
         default:
           break;
       }
-    },
-    (error) => {
-      console.error('Error fetching expenses:', error);
-    }
-  );
-}
 
-  
+      // Reset the form after successful submission
+      this.todoForm.reset({
+        month: this.selectedMonth,
+        expenseType: '',
+        expenseAmount: '',
+      });
+    }
+  }
+
+  onChangeExpense(event: any) {
+    this.selectedMonth = event.target.value;
+    this.monthSelected = true;
+
+    // Fetch expenses from the API
+    this.dataService.getExpenses(this.selectedMonth).subscribe(
+      (expenses) => {
+        console.log('Expenses fetched successfully:', expenses);
+
+        // Update the displayed expenses based on the API response
+        switch (this.selectedMonth) {
+          case 'January':
+            this.januaryExpense = expenses;
+            break;
+          case 'February':
+            this.februaryExpense = expenses;
+            break;
+          case 'March':
+            this.marchExpense = expenses;
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {
+        console.error('Error fetching expenses:', error);
+      }
+    );
+  }
 
   getFilteredExpenses() {
     let filteredExpense: any[] = [];
@@ -202,7 +198,7 @@ export class TodoComponent {
 
   saveForm() {
     alert('Transactions saved successfully!');
-        this.router.navigate(['/spend-smart/dashboard']);
+    this.router.navigate(['/spend-smart/dashboard']);
   }
 
   onBack() {

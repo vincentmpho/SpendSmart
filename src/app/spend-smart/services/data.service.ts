@@ -43,7 +43,10 @@ export class DataService {
       ...expense,
       id: 0, // Ensure the Id is set to 0
     }));
-    return this.http.post(`${this.endpoints.expenses}/bulk`, normalizedExpenses);
+    return this.http.post(
+      `${this.endpoints.expenses}/bulk`,
+      normalizedExpenses
+    );
   }
 
   // ----------------- Profile Methods -----------------
