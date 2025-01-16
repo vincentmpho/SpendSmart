@@ -1,7 +1,16 @@
 # SpendSmart
 
  the output:
-![image](https://github.com/user-attachments/assets/0d1e40d9-05d9-4905-9a4a-20700b47f5cb)
+![image](https://github.com/user-attachments/assets/5f765a49-5c7f-440f-9c0a-66b9ef8adb77) 
+
+![image](https://github.com/user-attachments/assets/3e8a0ed3-d713-4f94-a23f-0a8aa417dce7) 
+
+![image](https://github.com/user-attachments/assets/31d7c8c3-ed3c-47b8-8efd-4bf5b01cdfa3)
+
+![image](https://github.com/user-attachments/assets/164c78b9-2e62-4754-a87a-00c92cba2e20)
+
+
+
 
 
 
